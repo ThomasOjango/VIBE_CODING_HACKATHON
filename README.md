@@ -39,6 +39,7 @@ A comprehensive health and fitness application designed specifically for Kenyan 
 - **Authentication**: Supabase Auth
 - **Database**: Supabase (PostgreSQL)
 - **AI Integration**: Hugging Face Inference API
+- **Payments**: Intersend payment processing
 - **Form Handling**: React Hook Form with Yup validation
 - **Routing**: React Router DOM
 - **Icons**: Lucide React
@@ -71,6 +72,7 @@ src/
 - Node.js 16+ and npm
 - Supabase account
 - Hugging Face account (for AI features)
+- Intersend account (for payment processing)
 
 ### Environment Configuration
 
@@ -89,12 +91,18 @@ src/
    - Generate an API token
    - Add your token to `.env`
 
-4. **Install Dependencies**:
+4. **Configure Payment Processing**:
+   - Sign up for Intersend
+   - Get your API key from the dashboard
+   - Add your API key to `.env`
+   - Set environment to 'sandbox' for testing or 'production' for live payments
+
+5. **Install Dependencies**:
    ```bash
    npm install
    ```
 
-5. **Start Development Server**:
+6. **Start Development Server**:
    ```bash
    npm run dev
    ```
@@ -189,6 +197,7 @@ The app supports both English and Swahili languages with context-aware translati
 
 - **Row Level Security**: Supabase RLS policies protect user data
 - **Secure Authentication**: Email/password with proper validation
+- **Secure Payments**: PCI-compliant payment processing via Intersend
 - **API Key Protection**: Environment variables for sensitive tokens
 - **Data Encryption**: All data encrypted at rest and in transit
 
@@ -207,6 +216,7 @@ The app supports both English and Swahili languages with context-aware translati
 3. **Configure Environment Variables**:
    - Set production environment variables on your hosting platform
    - Ensure Supabase URLs are configured for production
+   - Set Intersend environment to 'production' and use live API keys
 
 ## 🤝 Contributing
 
@@ -232,13 +242,14 @@ For support and questions:
 ### Phase 1 (Current)
 - [x] Basic authentication and user profiles
 - [x] Dashboard with health statistics
+- [x] Payment processing with Intersend
 - [x] Multilingual support (EN/SW)
 - [x] Responsive design
 
 ### Phase 2 (Upcoming)
 - [ ] Complete nutrition tracking system
 - [ ] Advanced workout planning
-- [ ] Expert consultation booking
+- [x] Expert consultation booking with payments
 - [ ] Real-time chat with AI and experts
 - [ ] Mobile app development
 

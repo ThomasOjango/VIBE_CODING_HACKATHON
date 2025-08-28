@@ -13,6 +13,7 @@ const Navbar = () => {
 
   const navItems = [
     { name: t('nav.dashboard'), href: '/dashboard' },
+    { name: 'Pricing', href: '/pricing' },
     { name: t('nav.nutrition'), href: '/nutrition' },
     { name: t('nav.workouts'), href: '/workouts' },
     { name: t('nav.hydration'), href: '/hydration' },
@@ -70,6 +71,12 @@ const Navbar = () => {
 
             {user ? (
               <div className="flex items-center space-x-4">
+                <Link
+                  to="/pricing"
+                  className="text-sm font-medium text-green-600 hover:text-green-700 transition-colors"
+                >
+                  Upgrade
+                </Link>
                 <div className="flex items-center space-x-2">
                   <User className="w-5 h-5 text-gray-600" />
                   <span className="text-sm text-gray-600">{user.email}</span>

@@ -10,11 +10,14 @@ import {
   Filter,
   Search,
   Clock,
-  CheckCircle
+  CheckCircle,
+  CreditCard
 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import Button from '../components/UI/Button';
 import { Expert } from '../types';
+import PaymentModal from '../components/Payment/PaymentModal';
+import { oneTimeServices } from '../lib/intersend';
 
 const Experts = () => {
   const { t } = useLanguage();
@@ -24,6 +27,7 @@ const Experts = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedExpert, setSelectedExpert] = useState<Expert | null>(null);
   const [showBooking, setShowBooking] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   // Mock experts data
   useEffect(() => {
@@ -113,7 +117,14 @@ const Experts = () => {
   }, [experts, selectedSpecialty, searchTerm]);
 
   const handleBookConsultation = (expert: Expert) => {
+    // Show payment modal first
     setSelectedExpert(expert);
+    setShowPaymentModal(true);
+  };
+
+  const handlePaymentSuccess = (paymentId: string) => {
+    console.log('Payment successful:', paymentId);
+    setShowPaymentModal(false);
     setShowBooking(true);
   };
 
@@ -355,9 +366,9 @@ const Experts = () => {
                 <Button
                   onClick={() => handleBookConsultation(expert)}
                   className="w-full"
-                  icon={<Calendar className="w-4 h-4" />}
+                  icon={<CreditCard className="w-4 h-4" />}
                 >
-                  Book Consultation
+                  Book Consultation - KES 15.00
                 </Button>
                 <Button
                   variant="outline"
@@ -430,6 +441,13 @@ const Experts = () => {
       </div>
 
       <BookingModal />
+      
+      <PaymentModal
+        isOpen={showPaymentModal}
+        onClose={() => setShowPaymentModal(false)}
+        service={oneTimeServices.expertConsultation}
+        onSuccess={handlePaymentSuccess}
+      />
     </div>
   );
 };

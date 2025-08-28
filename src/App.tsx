@@ -92,6 +92,7 @@ const MentalHealth = () => (
     </div>
   </div>
 );
+import Pricing from './pages/Pricing';
 
 import Experts from './pages/Experts';
 
@@ -159,6 +160,14 @@ function App() {
                   <ProtectedRoute>
                     <MentalHealth />
                   </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/pricing"
+                element={
+                  <PublicRoute>
+                    <Pricing />
+                  </PublicRoute>
                 }
               />
               <Route
