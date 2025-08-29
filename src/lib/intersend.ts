@@ -1,30 +1,12 @@
 // Mock Intersend payment integration for Better Life app
 // This is a demonstration implementation - replace with actual Intersend SDK when available
 
-export interface PaymentRequest {
-  amount: number;
-  currency: string;
-  description: string;
-  customerEmail: string;
-  customerName: string;
-  metadata?: Record<string, any>;
-}
-
-export interface SubscriptionRequest {
-  planId: string;
-  customerEmail: string;
-  customerName: string;
-  metadata?: Record<string, any>;
-}
-
-// Mock Intersend class for demonstration
+// Mock Intersend class to simulate the SDK
 class MockIntersend {
-  private apiKey: string;
-  private environment: string;
+  private config: { apiKey: string; environment: string };
 
   constructor(config: { apiKey: string; environment: string }) {
-    this.apiKey = config.apiKey;
-    this.environment = config.environment;
+    this.config = config;
   }
 
   payments = {
@@ -34,11 +16,11 @@ class MockIntersend {
       
       // Mock successful payment creation
       return {
-        id: `pay_${Math.random().toString(36).substr(2, 9)}`,
+        id: `pay_${Date.now()}`,
         status: 'pending',
         amount: paymentData.amount,
         currency: paymentData.currency,
-        checkout_url: `https://checkout.intersend.co/demo/${Math.random().toString(36).substr(2, 9)}`,
+        checkout_url: `https://checkout.intersend.co/pay_${Date.now()}`,
         ...paymentData
       };
     },
@@ -48,7 +30,7 @@ class MockIntersend {
       return {
         id: paymentId,
         status: 'completed',
-        amount: 1500,
+        amount: 1000,
         currency: 'KES'
       };
     }
@@ -58,10 +40,10 @@ class MockIntersend {
     create: async (subscriptionData: any) => {
       await new Promise(resolve => setTimeout(resolve, 1000));
       return {
-        id: `sub_${Math.random().toString(36).substr(2, 9)}`,
+        id: `sub_${Date.now()}`,
         status: 'active',
         plan_id: subscriptionData.plan_id,
-        checkout_url: `https://checkout.intersend.co/demo/${Math.random().toString(36).substr(2, 9)}`,
+        checkout_url: `https://checkout.intersend.co/sub_${Date.now()}`,
         ...subscriptionData
       };
     },
@@ -90,6 +72,22 @@ const intersend = new MockIntersend({
   apiKey: import.meta.env.VITE_INTERSEND_API_KEY || 'demo-key',
   environment: import.meta.env.VITE_INTERSEND_ENVIRONMENT || 'sandbox'
 });
+
+export interface PaymentRequest {
+  amount: number;
+  currency: string;
+  description: string;
+  customerEmail: string;
+  customerName: string;
+  metadata?: Record<string, any>;
+}
+
+export interface SubscriptionRequest {
+  planId: string;
+  customerEmail: string;
+  customerName: string;
+  metadata?: Record<string, any>;
+}
 
 export const intersendService = {
   // Create a one-time payment
