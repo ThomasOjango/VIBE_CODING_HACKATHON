@@ -1,11 +1,5 @@
-// Intersend payment integration for Better Life app
-import { Intersend } from '@intersend/js-sdk';
-
-// Initialize Intersend with your API key
-const intersend = new Intersend({
-  apiKey: import.meta.env.VITE_INTERSEND_API_KEY || 'demo-key',
-  environment: import.meta.env.VITE_INTERSEND_ENVIRONMENT || 'sandbox'
-});
+// Mock Intersend payment integration for Better Life app
+// This is a demonstration implementation - replace with actual Intersend SDK when available
 
 export interface PaymentRequest {
   amount: number;
@@ -22,6 +16,80 @@ export interface SubscriptionRequest {
   customerName: string;
   metadata?: Record<string, any>;
 }
+
+// Mock Intersend class for demonstration
+class MockIntersend {
+  private apiKey: string;
+  private environment: string;
+
+  constructor(config: { apiKey: string; environment: string }) {
+    this.apiKey = config.apiKey;
+    this.environment = config.environment;
+  }
+
+  payments = {
+    create: async (paymentData: any) => {
+      // Simulate API call delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Mock successful payment creation
+      return {
+        id: `pay_${Math.random().toString(36).substr(2, 9)}`,
+        status: 'pending',
+        amount: paymentData.amount,
+        currency: paymentData.currency,
+        checkout_url: `https://checkout.intersend.co/demo/${Math.random().toString(36).substr(2, 9)}`,
+        ...paymentData
+      };
+    },
+
+    retrieve: async (paymentId: string) => {
+      await new Promise(resolve => setTimeout(resolve, 500));
+      return {
+        id: paymentId,
+        status: 'completed',
+        amount: 1500,
+        currency: 'KES'
+      };
+    }
+  };
+
+  subscriptions = {
+    create: async (subscriptionData: any) => {
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      return {
+        id: `sub_${Math.random().toString(36).substr(2, 9)}`,
+        status: 'active',
+        plan_id: subscriptionData.plan_id,
+        checkout_url: `https://checkout.intersend.co/demo/${Math.random().toString(36).substr(2, 9)}`,
+        ...subscriptionData
+      };
+    },
+
+    retrieve: async (subscriptionId: string) => {
+      await new Promise(resolve => setTimeout(resolve, 500));
+      return {
+        id: subscriptionId,
+        status: 'active',
+        plan_id: 'premium'
+      };
+    },
+
+    cancel: async (subscriptionId: string) => {
+      await new Promise(resolve => setTimeout(resolve, 500));
+      return {
+        id: subscriptionId,
+        status: 'cancelled'
+      };
+    }
+  };
+}
+
+// Initialize mock Intersend
+const intersend = new MockIntersend({
+  apiKey: import.meta.env.VITE_INTERSEND_API_KEY || 'demo-key',
+  environment: import.meta.env.VITE_INTERSEND_ENVIRONMENT || 'sandbox'
+});
 
 export const intersendService = {
   // Create a one-time payment
@@ -43,7 +111,7 @@ export const intersendService = {
       return { success: true, payment };
     } catch (error) {
       console.error('Payment creation failed:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: (error as Error).message };
     }
   },
 
@@ -64,7 +132,7 @@ export const intersendService = {
       return { success: true, subscription };
     } catch (error) {
       console.error('Subscription creation failed:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: (error as Error).message };
     }
   },
 
@@ -75,7 +143,7 @@ export const intersendService = {
       return { success: true, payment };
     } catch (error) {
       console.error('Failed to get payment status:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: (error as Error).message };
     }
   },
 
@@ -86,7 +154,7 @@ export const intersendService = {
       return { success: true, subscription };
     } catch (error) {
       console.error('Failed to get subscription status:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: (error as Error).message };
     }
   },
 
@@ -97,7 +165,7 @@ export const intersendService = {
       return { success: true, subscription };
     } catch (error) {
       console.error('Failed to cancel subscription:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: (error as Error).message };
     }
   }
 };

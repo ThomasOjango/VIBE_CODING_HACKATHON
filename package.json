@@ -9,9 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview"
   },
-  "dependencies": {
     "@hookform/resolvers": "^5.2.1",
-    "@intersend/js-sdk": "^1.0.0",
     "@supabase/supabase-js": "^2.56.0",
     "chart.js": "^4.5.0",
     "date-fns": "^4.1.0",
