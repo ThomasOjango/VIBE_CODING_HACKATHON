@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { X, CreditCard, Loader, CheckCircle, AlertCircle } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
-import { intersendService, PaymentRequest } from '../../lib/intersend';
+import { intersendService, PaymentRequest, INTERSEND_ACCOUNT } from '../../lib/intersend';
 import Button from '../UI/Button';
 
 interface PaymentModalProps {
@@ -126,8 +126,8 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
                   <span className="font-medium text-blue-800">Secure Payment</span>
                 </div>
                 <p className="text-blue-700 text-sm">
-                  Your payment is processed securely through Intersend. We support M-Pesa, 
-                  bank transfers, and major credit cards.
+                  Your payment will be processed securely through Intersend to {INTERSEND_ACCOUNT.businessName} 
+                  (Account: {INTERSEND_ACCOUNT.phoneNumber}). We support M-Pesa, bank transfers, and major credit cards.
                 </p>
               </div>
 

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { X, Crown, Check, Loader, AlertCircle } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
-import { intersendService, pricingPlans, SubscriptionRequest } from '../../lib/intersend';
+import { intersendService, pricingPlans, SubscriptionRequest, INTERSEND_ACCOUNT } from '../../lib/intersend';
 import Button from '../UI/Button';
 
 interface SubscriptionModalProps {
@@ -145,7 +145,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
             <h5 className="font-medium text-blue-800 mb-2">Subscription Benefits</h5>
             <ul className="text-blue-700 text-sm space-y-1">
               <li>• Cancel anytime - no long-term commitment</li>
-              <li>• Secure payments via M-Pesa, bank transfer, or card</li>
+              <li>• Secure payments via M-Pesa to {INTERSEND_ACCOUNT.phoneNumber} ({INTERSEND_ACCOUNT.businessName})</li>
               <li>• Instant access to premium features</li>
               <li>• 7-day money-back guarantee</li>
             </ul>
