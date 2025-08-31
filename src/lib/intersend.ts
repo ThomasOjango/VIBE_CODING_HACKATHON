@@ -1,6 +1,14 @@
 // Mock Intersend payment integration for Better Life app
 // This is a demonstration implementation - replace with actual Intersend SDK when available
 
+// Better Life Intersend Account Details
+const INTERSEND_ACCOUNT = {
+  phoneNumber: '+254759678286',
+  accountOwner: 'Thomas Okatch',
+  businessName: 'Better Life',
+  paymentUrl: 'https://payment.intasend.com/overview/'
+};
+
 // Mock Intersend class to simulate the SDK
 class MockIntersend {
   private config: { apiKey: string; environment: string };
@@ -20,7 +28,7 @@ class MockIntersend {
         status: 'pending',
         amount: paymentData.amount,
         currency: paymentData.currency,
-        checkout_url: `https://checkout.intersend.co/pay_${Date.now()}`,
+        checkout_url: `${INTERSEND_ACCOUNT.paymentUrl}?amount=${paymentData.amount}&currency=${paymentData.currency}&recipient=${INTERSEND_ACCOUNT.phoneNumber}&business=${encodeURIComponent(INTERSEND_ACCOUNT.businessName)}`,
         ...paymentData
       };
     },
@@ -43,7 +51,7 @@ class MockIntersend {
         id: `sub_${Date.now()}`,
         status: 'active',
         plan_id: subscriptionData.plan_id,
-        checkout_url: `https://checkout.intersend.co/sub_${Date.now()}`,
+        checkout_url: `${INTERSEND_ACCOUNT.paymentUrl}?amount=${subscriptionData.amount}&currency=KES&recipient=${INTERSEND_ACCOUNT.phoneNumber}&business=${encodeURIComponent(INTERSEND_ACCOUNT.businessName)}&type=subscription`,
         ...subscriptionData
       };
     },
@@ -67,7 +75,7 @@ class MockIntersend {
   };
 }
 
-// Initialize mock Intersend
+// Initialize mock Intersend with Better Life account details
 const intersend = new MockIntersend({
   apiKey: import.meta.env.VITE_INTERSEND_API_KEY || 'demo-key',
   environment: import.meta.env.VITE_INTERSEND_ENVIRONMENT || 'sandbox'
@@ -101,6 +109,11 @@ export const intersendService = {
           email: paymentData.customerEmail,
           name: paymentData.customerName,
         },
+        recipient: {
+          phoneNumber: INTERSEND_ACCOUNT.phoneNumber,
+          accountOwner: INTERSEND_ACCOUNT.accountOwner,
+          businessName: INTERSEND_ACCOUNT.businessName
+        },
         metadata: paymentData.metadata,
         success_url: `${window.location.origin}/payment/success`,
         cancel_url: `${window.location.origin}/payment/cancel`,
@@ -121,6 +134,11 @@ export const intersendService = {
         customer: {
           email: subscriptionData.customerEmail,
           name: subscriptionData.customerName,
+        },
+        recipient: {
+          phoneNumber: INTERSEND_ACCOUNT.phoneNumber,
+          accountOwner: INTERSEND_ACCOUNT.accountOwner,
+          businessName: INTERSEND_ACCOUNT.businessName
         },
         metadata: subscriptionData.metadata,
         success_url: `${window.location.origin}/subscription/success`,
@@ -167,6 +185,9 @@ export const intersendService = {
     }
   }
 };
+
+// Export account details for use in components
+export { INTERSEND_ACCOUNT };
 
 // Pricing plans
 export const pricingPlans = {
